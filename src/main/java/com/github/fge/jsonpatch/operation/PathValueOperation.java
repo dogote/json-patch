@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jsonpatch.JsonPatchMessages;
-import com.github.fge.jsonpatch.operation.JsonPatchOperation;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 
@@ -62,6 +61,14 @@ public abstract class PathValueOperation
         this.op = op;
         this.path = path;
         this.value = value.deepCopy();
+    }
+
+    public String getOp() {
+        return this.op;
+    }
+
+    public JsonPointer getPath() {
+        return this.path;
     }
 
     @Override
