@@ -51,6 +51,14 @@ public abstract class PathDualValueOperation
         this.toValue = toValue;
     }
 
+    public String getOp() {
+        return this.op;
+    }
+
+    public JsonPointer getPath() {
+        return this.path;
+    }
+
     @Override
     public final void serialize(final JsonGenerator jgen,
         final SerializerProvider provider)

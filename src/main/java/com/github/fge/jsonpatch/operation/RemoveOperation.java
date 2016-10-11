@@ -32,7 +32,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.JsonPatchMessages;
-import com.github.fge.jsonpatch.operation.JsonPatchOperation;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
 import com.google.common.collect.Iterables;
@@ -81,6 +80,14 @@ public final class RemoveOperation
         else
             ((ArrayNode) parentNode).remove(Integer.parseInt(raw));
         return ret;
+    }
+
+    public String getOp() {
+        return this.op;
+    }
+
+    public JsonPointer getPath() {
+        return this.path;
     }
 
     @Override
