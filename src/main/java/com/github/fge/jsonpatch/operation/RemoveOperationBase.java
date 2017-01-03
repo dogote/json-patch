@@ -23,7 +23,6 @@ package com.github.fge.jsonpatch.operation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
@@ -33,7 +32,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.JsonPatchMessages;
-import com.github.fge.jsonpatch.operation.JsonPatchOperation;
 import com.github.fge.jsonpatch.operation.policy.PathMissingPolicy;
 import com.github.fge.msgsimple.bundle.MessageBundle;
 import com.github.fge.msgsimple.load.MessageBundles;
@@ -50,7 +48,7 @@ public abstract class RemoveOperationBase
     protected static final MessageBundle BUNDLE
         = MessageBundles.getBundle(JsonPatchMessages.class);
 
-    private PathMissingPolicy pathMissingPolicy;
+    private final PathMissingPolicy pathMissingPolicy;
 
     protected final String op;
 
@@ -71,10 +69,10 @@ public abstract class RemoveOperationBase
         throws JsonPatchException
     {
         final JsonNode ret = node.deepCopy();
-        if (path.isEmpty())
+        if (this.path.isEmpty())
             return MissingNode.getInstance();
-        if (path.path(node).isMissingNode()) {
-            switch (pathMissingPolicy) {
+        if (this.path.path(node).isMissingNode()) {
+            switch (this.pathMissingPolicy) {
                 case THROW:
                     throw new JsonPatchException(BUNDLE.getMessage(
                         "jsonPatch.noSuchPath"));
@@ -82,8 +80,8 @@ public abstract class RemoveOperationBase
                     return ret;
             }
         }
-        final JsonNode parentNode = path.parent().get(ret);
-        final String raw = Iterables.getLast(path).getToken().getRaw();
+        final JsonNode parentNode = this.path.parent().get(ret);
+        final String raw = Iterables.getLast(this.path).getToken().getRaw();
         if (parentNode.isObject())
             ((ObjectNode) parentNode).remove(raw);
         else
@@ -92,27 +90,35 @@ public abstract class RemoveOperationBase
     }
 
     @Override
+	public String getOp() {
+        return this.op;
+    }
+
+    @Override
+	public JsonPointer getPath() {
+        return this.path;
+    }
+
+    @Override
     public void serialize(final JsonGenerator jgen,
         final SerializerProvider provider)
-        throws IOException, JsonProcessingException
-    {
+        throws IOException {
         jgen.writeStartObject();
-        jgen.writeStringField("op", op);
-        jgen.writeStringField("path", path.toString());
+        jgen.writeStringField("op", this.op);
+        jgen.writeStringField("path", this.path.toString());
         jgen.writeEndObject();
     }
 
     @Override
     public void serializeWithType(final JsonGenerator jgen,
         final SerializerProvider provider, final TypeSerializer typeSer)
-        throws IOException, JsonProcessingException
-    {
+        throws IOException {
         serialize(jgen, provider);
     }
 
     @Override
     public String toString()
     {
-        return "op: " + op + "; path: \"" + path + '"';
+        return "op: " + this.op + "; path: \"" + this.path + '"';
     }
 }
