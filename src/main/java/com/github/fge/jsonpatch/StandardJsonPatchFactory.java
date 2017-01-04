@@ -20,14 +20,7 @@ public class StandardJsonPatchFactory
     public static JsonPatchFactory create()
     {
         ObjectMapper mapper = JacksonUtils.newMapper();
-        mapper.registerSubtypes(
-                new NamedType(AddOperation.class, AddOperation.OPERATION_NAME),
-                new NamedType(CopyOperation.class, CopyOperation.OPERATION_NAME),
-                new NamedType(MoveOperation.class, MoveOperation.OPERATION_NAME),
-                new NamedType(RemoveOperation.class, RemoveOperation.OPERATION_NAME),
-                new NamedType(ReplaceOperation.class, ReplaceOperation.OPERATION_NAME),
-                new NamedType(TestOperation.class, TestOperation.OPERATION_NAME)
-        );
+        mapper.registerModule(new JsonPatchModule());
         return new JsonPatchFactory(mapper);
     }
 }
