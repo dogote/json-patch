@@ -24,8 +24,8 @@ apply(plugin: "osgi");
 apply(plugin: "idea");
 apply(plugin: "eclipse");
 
-group = "com.box";
-version = "1.16-SNAPSHOT";
+group = "io.dogote";
+version = "1.15-SNAPSHOT";
 sourceCompatibility = "1.6";
 targetCompatibility = "1.6"; // defaults to sourceCompatibility
 
