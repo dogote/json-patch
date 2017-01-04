@@ -113,8 +113,8 @@ task pom << {
 
 project.ext {
     description = "JSON Patch (RFC 6902) and JSON Merge Patch (RFC 7386) implementation in Java";
-    scmURL = sprintf("git@github.com:box-metadata/%s.git", name);
-    projectURL = sprintf("https://github.com/box-metadata/%s", name);
+    scmURL = sprintf("git@github.com:dogote/%s.git", name);
+    projectURL = sprintf("https://github.com/dogote/%s", name);
     sonatypeStaging = "https://oss.sonatype.org/service/local/staging/deploy/maven2/";
     sonatypeSnapshots = "https://oss.sonatype.org/content/repositories/snapshots/";
 };
@@ -192,9 +192,9 @@ uploadArchives {
 
         developers {
             developer {
-                id "metadata-dev";
-                name "Metadata Dev";
-                email "metadata-dev@box.com";
+                id "jasonchaffee";
+                name "Jason Chafffee";
+                email "jasonchaffee+dogote@gmail.com";
             }
         }
     }
