@@ -42,26 +42,17 @@ import java.io.IOException;
 /**
  * RemoveOperationBase implements the basic concept of removing the requested path.
  */
-public abstract class RemoveOperationBase
-    implements JsonPatchOperation
+public abstract class RemoveOperationBase extends JsonPatchOperationBase
 {
     protected static final MessageBundle BUNDLE
         = MessageBundles.getBundle(JsonPatchMessages.class);
-
-    private final PathMissingPolicy pathMissingPolicy;
-
-    protected final String op;
-
-    protected final JsonPointer path;
 
     @JsonCreator
     public RemoveOperationBase(final String op,
                                @JsonProperty("path") final JsonPointer path,
                                final PathMissingPolicy pathMissingPolicy)
     {
-        this.op = op;
-        this.path = path;
-        this.pathMissingPolicy = pathMissingPolicy;
+        super(op, path, pathMissingPolicy);
     }
 
     @Override
@@ -69,10 +60,10 @@ public abstract class RemoveOperationBase
         throws JsonPatchException
     {
         final JsonNode ret = node.deepCopy();
-        if (this.path.isEmpty())
+        if (this.getPath().isEmpty())
             return MissingNode.getInstance();
-        if (this.path.path(node).isMissingNode()) {
-            switch (this.pathMissingPolicy) {
+        if (this.getPath().path(node).isMissingNode()) {
+            switch (this.getPathMissingPolicy()) {
                 case THROW:
                     throw new JsonPatchException(BUNDLE.getMessage(
                         "jsonPatch.noSuchPath"));
@@ -80,8 +71,8 @@ public abstract class RemoveOperationBase
                     return ret;
             }
         }
-        final JsonNode parentNode = this.path.parent().get(ret);
-        final String raw = Iterables.getLast(this.path).getToken().getRaw();
+        final JsonNode parentNode = this.getPath().parent().get(ret);
+        final String raw = Iterables.getLast(this.getPath()).getToken().getRaw();
         if (parentNode.isObject())
             ((ObjectNode) parentNode).remove(raw);
         else
@@ -90,22 +81,12 @@ public abstract class RemoveOperationBase
     }
 
     @Override
-	public String getOp() {
-        return this.op;
-    }
-
-    @Override
-	public JsonPointer getPath() {
-        return this.path;
-    }
-
-    @Override
     public void serialize(final JsonGenerator jgen,
         final SerializerProvider provider)
         throws IOException {
         jgen.writeStartObject();
-        jgen.writeStringField("op", this.op);
-        jgen.writeStringField("path", this.path.toString());
+        jgen.writeStringField("op", this.getOp());
+        jgen.writeStringField("path", this.getPath().toString());
         jgen.writeEndObject();
     }
 
@@ -119,6 +100,6 @@ public abstract class RemoveOperationBase
     @Override
     public String toString()
     {
-        return "op: " + this.op + "; path: \"" + this.path + '"';
+        return "op: " + this.getOp() + "; path: \"" + this.getPath() + '"';
     }
 }
