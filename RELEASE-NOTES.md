@@ -2,6 +2,11 @@
 
 * Introduce "move?" operation
 
+## 1.14.4
+
+* Introduce accessers for path and op
+* Introduce Jackson Modules for operations and extended operations
+
 ## 1.14
 
 * Introduce "remove?" operation
