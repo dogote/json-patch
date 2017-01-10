@@ -14,7 +14,7 @@ import com.github.fge.jsonpatch.operation.policy.PathMissingPolicy;
 public abstract class MoveOperationBase
     extends DualPathOperation
 {
-    private PathMissingPolicy pathMissingPolicy;
+    private final PathMissingPolicy pathMissingPolicy;
 
     @JsonCreator
     public MoveOperationBase(final String op,
@@ -31,7 +31,7 @@ public abstract class MoveOperationBase
         throws JsonPatchException
     {
         final JsonNode ret = node.deepCopy();
-        if (from.equals(path))
+        if (from.equals(getPath()))
             return ret;
         final JsonNode movedNode = from.path(node);
         if (movedNode.isMissingNode()) {
@@ -44,7 +44,7 @@ public abstract class MoveOperationBase
             }
         }
         final JsonPatchOperation remove = new RemoveOperation(from);
-        final JsonPatchOperation add = new AddOperation(path, movedNode);
+        final JsonPatchOperation add = new AddOperation(getPath(), movedNode);
         return add.apply(remove.apply(node));
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.github.fge.jsonpatch.operation.AddOperation;
 import com.github.fge.jsonpatch.operation.CopyOperation;
 import com.github.fge.jsonpatch.operation.MoveOperation;
+import com.github.fge.jsonpatch.operation.MoveOptionalOperation;
 import com.github.fge.jsonpatch.operation.OmitOperation;
 import com.github.fge.jsonpatch.operation.OmitOptionalOperation;
 import com.github.fge.jsonpatch.operation.RemoveOperation;
@@ -28,6 +29,7 @@ public class JsonPatchExtendedModule extends SimpleModule {
                 new NamedType(AddOperation.class, AddOperation.OPERATION_NAME),
                 new NamedType(CopyOperation.class, CopyOperation.OPERATION_NAME),
                 new NamedType(MoveOperation.class, MoveOperation.OPERATION_NAME),
+                new NamedType(MoveOptionalOperation.class, MoveOptionalOperation.OPERATION_NAME),
                 new NamedType(RemoveOperation.class, RemoveOperation.OPERATION_NAME),
                 new NamedType(RemoveOptionalOperation.class, RemoveOptionalOperation.OPERATION_NAME),
                 new NamedType(ReplaceOperation.class, ReplaceOperation.OPERATION_NAME),
