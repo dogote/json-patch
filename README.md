@@ -30,7 +30,7 @@ With Gradle:
 
 ```groovy
 dependencies {
-    compile(group: "com.github.fge", name: "json-patch", version: "yourVersionHere");
+    compile(group: "io.dogote", name: "json-patch", version: "yourVersionHere");
 }
 ```
 
