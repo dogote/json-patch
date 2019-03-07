@@ -17,6 +17,24 @@
  * - ASL 2.0: http://www.apache.org/licenses/LICENSE-2.0.txt
  */
 
+buildscript {
+    repositories {
+        maven {
+            url "http://repo.springsource.org/plugins-release";
+        }
+    }
+    dependencies {
+        classpath(group: "org.springframework.build.gradle", name: "propdeps-plugin", version: "0.0.7");
+    }
+};
+
+configure(allprojects) {
+    apply(plugin: "propdeps");
+    apply(plugin: "propdeps-maven");
+    apply(plugin: "propdeps-idea");
+    apply(plugin: "propdeps-eclipse");
+}
+
 apply(plugin: "java");
 apply(plugin: "maven");
 apply(plugin: "signing");
@@ -33,8 +51,8 @@ targetCompatibility = "1.6"; // defaults to sourceCompatibility
  * List of dependencies
  */
 dependencies {
-    compile(group: "com.google.code.findbugs", name: "jsr305", version: "2.0.1");
-    compile(group: "com.github.fge", name: "jackson-coreutils", version: "1.6");
+    provided(group: "com.google.code.findbugs", name: "jsr305", version: "2.0.1");
+    compile(group: "com.github.java-json-tools", name: "jackson-coreutils", version: "1.9");
     testCompile(group: "org.testng", name: "testng", version: "6.8.7") {
         exclude(group: "junit", module: "junit");
         exclude(group: "org.beanshell", module: "bsh");
@@ -99,7 +117,7 @@ artifacts {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = "2.5";
+    gradleVersion = "3.5";
     distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip";
 }
 
@@ -205,4 +223,3 @@ signing {
     required { forRelease && gradle.taskGraph.hasTask("uploadArchives") };
     sign configurations.archives;
 }
-
