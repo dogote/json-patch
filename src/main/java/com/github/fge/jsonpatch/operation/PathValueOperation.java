@@ -82,4 +82,9 @@ public abstract class PathValueOperation extends JsonPatchOperationBase
     {
         return "op: " + getOp() + "; path: \"" + getPath() + "\"; value: " + value;
     }
+
+    public JsonNode getValue()
+    {
+        return value.deepCopy();
+    }
 }
