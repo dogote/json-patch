@@ -101,8 +101,10 @@ directly from a `JsonNode`. Examples:
 final ObjectMapper mapper = new ObjectMapper();
 final InputStream in = ...;
 final JsonPatch patch = mapper.readValue(in, JsonPatch.class);
-// From a JsonNode
+// From a JsonNode (deprecated)
 final JsonPatch patch = JsonPatch.fromJson(node);
+// From a JsonNode (deprecated)
+final JsonPatch patch = ExtendedJsonPatchFactory.create().fromJson(node);
 ```
 
 You can then apply the patch to your data:
